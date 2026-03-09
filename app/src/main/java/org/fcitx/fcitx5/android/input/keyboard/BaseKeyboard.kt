@@ -6,6 +6,7 @@ package org.fcitx.fcitx5.android.input.keyboard
 
 import android.content.Context
 import android.graphics.Rect
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.CallSuper
@@ -205,6 +206,8 @@ abstract class BaseKeyboard(
                     }
                 }
             }
+            swipeThresholdY = disabledSwipeThreshold;
+            swipeThresholdX = disabledSwipeThreshold;
             def.behaviors.forEach {
                 when (it) {
                     is KeyDef.Behavior.Press -> {
@@ -225,9 +228,44 @@ abstract class BaseKeyboard(
                             if (hapticOnRepeat) InputFeedbacks.hapticFeedback(view)
                         }
                     }
+                    is KeyDef.Behavior.SwipeLeft -> {
+                        swipeEnabled = true
+                        swipeThresholdX = inputSwipeThreshold
+                        val oldOnGestureListener = onGestureListener ?: OnGestureListener.Empty
+                        onGestureListener = OnGestureListener { view, event ->
+                            when (event.type) {
+                                GestureType.Up -> {
+                                    if (!event.consumed && event.totalX < 0 && kotlin.math.abs(event.totalX) > kotlin.math.abs(event.totalY)) {
+                                        onAction(it.action)
+                                        true
+                                    } else {
+                                        false
+                                    }
+                                }
+                                else -> false
+                            } || oldOnGestureListener.onGesture(view, event)
+                        }
+                    }
+                    is KeyDef.Behavior.SwipeRight -> {
+                        swipeEnabled = true
+                        swipeThresholdX = inputSwipeThreshold
+                        val oldOnGestureListener = onGestureListener ?: OnGestureListener.Empty
+                        onGestureListener = OnGestureListener { view, event ->
+                            when (event.type) {
+                                GestureType.Up -> {
+                                    if (!event.consumed && event.totalX > 0 && event.totalX > kotlin.math.abs(event.totalY)) {
+                                        onAction(it.action)
+                                        true
+                                    } else {
+                                        false
+                                    }
+                                }
+                                else -> false
+                            } || oldOnGestureListener.onGesture(view, event)
+                        }
+                    }
                     is KeyDef.Behavior.Swipe -> {
                         swipeEnabled = true
-                        swipeThresholdX = disabledSwipeThreshold
                         swipeThresholdY = inputSwipeThreshold
                         val oldOnGestureListener = onGestureListener ?: OnGestureListener.Empty
                         onGestureListener = OnGestureListener { view, event ->
@@ -309,8 +347,49 @@ abstract class BaseKeyboard(
                                         PopupAction.PreviewAction(view.id, it.content, view.bounds)
                                     )
                                     GestureType.Move -> {
+
+                                        // 下面的部分只检查了
                                         val triggered = swipeSymbolDirection.checkY(event.totalY)
                                         val text = if (triggered) it.alternative else it.content
+                                        onPopupAction(
+                                            PopupAction.PreviewUpdateAction(view.id, text)
+                                        )
+                                    }
+                                    GestureType.Up -> {
+                                        onPopupAction(PopupAction.DismissAction(view.id))
+                                    }
+                                }
+                            }
+                            // never consume gesture in preview popup
+                            oldOnGestureListener.onGesture(view, event)
+                        }
+                    }
+                    is KeyDef.Popup.BiDirAltPreview -> {
+                        val oldOnGestureListener = onGestureListener ?: OnGestureListener.Empty
+                        onGestureListener = OnGestureListener { view, event ->
+                            view as KeyView
+                            if (popupOnKeyPress) {
+                                when (event.type) {
+                                    GestureType.Down -> onPopupAction(
+                                        PopupAction.PreviewAction(view.id, it.content, view.bounds)
+                                    )
+                                    GestureType.Move -> {
+                                        val triggeredY = swipeSymbolDirection.checkY(event.totalY)
+                                        val triggeredLeft = event.totalX < 0 && Math.abs(event.totalX) > Math.abs(event.totalY);
+                                        val triggeredRight = event.totalX > 0 && Math.abs(event.totalX) > Math.abs(event.totalY);
+                                        val text = if(it.hasUp && triggeredY){
+                                            it.left + it.right
+                                        } else{
+                                            if(triggeredLeft){
+                                                it.left;
+                                            } else
+                                                if(triggeredRight){
+                                                    it.right;
+                                                } else{
+                                                    it.content;
+                                                }
+                                        }
+
                                         onPopupAction(
                                             PopupAction.PreviewUpdateAction(view.id, text)
                                         )

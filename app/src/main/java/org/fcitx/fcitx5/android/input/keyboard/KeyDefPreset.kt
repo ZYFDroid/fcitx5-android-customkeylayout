@@ -44,7 +44,8 @@ class AlphabetKey(
     val punctuation: String,
     variant: Variant = Variant.Normal,
     popup: Array<Popup>? = null,
-    percentWidth: Float = 0.1f
+    percentWidth: Float = 0.1f,
+    val canSwipeUp: Boolean = false,
 ) : KeyDef(
     Appearance.AltText(
         displayText = character,
@@ -53,14 +54,33 @@ class AlphabetKey(
         variant = variant,
         percentWidth = percentWidth
     ),
-    setOf(
-        Behavior.Press(KeyAction.FcitxKeyAction(character)),
-        Behavior.Swipe(KeyAction.FcitxKeyAction(punctuation))
-    ),
-    popup ?: arrayOf(
-        Popup.AltPreview(character, punctuation),
-        Popup.Keyboard(character)
-    )
+    buildSet {
+        if(punctuation.length > 1){
+            val leftChar = punctuation.first().toString();
+            var rightChar = punctuation.last().toString();
+            add(Behavior.SwipeLeft(KeyAction.CommitAction(leftChar)));
+            add(Behavior.SwipeRight(KeyAction.CommitAction(rightChar)));
+            if(canSwipeUp){
+                add(Behavior.Swipe(KeyAction.CommitAction(leftChar+rightChar)));
+            }
+        }
+        else{
+            add(Behavior.Swipe(KeyAction.FcitxKeyAction(punctuation)))
+        }
+
+        add(Behavior.Press(KeyAction.FcitxKeyAction(character)))
+    },
+    popup ?: buildSet {
+        if(punctuation.length > 1){
+            val leftChar = punctuation.first().toString();
+            var rightChar = punctuation.last().toString();
+            add(Popup.BiDirAltPreview(character,leftChar,rightChar, hasUp = canSwipeUp));
+        }
+        else{
+            add(Popup.AltPreview(character, punctuation));
+        }
+        add(Popup.Keyboard(character));
+    }.toTypedArray()
 )
 
 class AlphabetDigitKey(

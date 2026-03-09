@@ -107,6 +107,14 @@ open class KeyDef(
             val action: KeyAction
         ) : Behavior()
 
+        class SwipeLeft(
+            val action: KeyAction
+        ) : Behavior()
+
+        class SwipeRight(
+            val action: KeyAction
+        ) : Behavior()
+
         class DoubleTap(
             val action: KeyAction
         ) : Behavior()
@@ -116,6 +124,7 @@ open class KeyDef(
         open class Preview(val content: String) : Popup()
 
         class AltPreview(content: String, val alternative: String) : Preview(content)
+        class BiDirAltPreview(content: String, val left: String, val right: String,val hasUp: Boolean) : Preview(content)
 
         class Keyboard(val label: String) : Popup()
 
