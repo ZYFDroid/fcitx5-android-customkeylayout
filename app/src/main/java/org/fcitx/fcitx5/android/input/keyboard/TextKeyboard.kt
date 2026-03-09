@@ -45,33 +45,33 @@ class TextKeyboard(
                 AlphabetKey("P", "0")
             ),
             listOf(
-                AlphabetKey("A", "@"),
-                AlphabetKey("S", "*"),
-                AlphabetKey("D", "+"),
-                AlphabetKey("F", "\'  \""),
-                AlphabetKey("G", "(  )", canSwipeUp = true),
-                AlphabetKey("H", "/"),
-                AlphabetKey("J", "#"),
-                AlphabetKey("K", "("),
-                AlphabetKey("L", ")")
+                AlphabetKey("A", "\\"),
+                AlphabetKey("S", "*  /"),
+                AlphabetKey("D", "!  =", canSwipeUp = true),
+                AlphabetKey("F", "&  |"),
+                AlphabetKey("G", "^  ~"),
+                AlphabetKey("H", "<  >", canSwipeUp = true),
+                AlphabetKey("J", "[  ]", canSwipeUp = true),
+                AlphabetKey("K", "{  }", canSwipeUp = true),
+                AlphabetKey("L", "?")
             ),
             listOf(
                 CapsKey(),
-                AlphabetKey("Z", "'"),
-                AlphabetKey("X", ":"),
-                AlphabetKey("C", "\""),
-                AlphabetKey("V", "?"),
-                AlphabetKey("B", "!"),
-                AlphabetKey("N", "~"),
-                AlphabetKey("M", "\\"),
+                AlphabetKey("Z", "+  -"),
+                AlphabetKey("X", "@  #"),
+                AlphabetKey("C", "$  %"),
+                AlphabetKey("V", ":"),
+                AlphabetKey("B", ";"),
+                AlphabetKey("N", "(  )", canSwipeUp = true),
+                AlphabetKey("M", "\'  \""),
                 BackspaceKey()
             ),
             listOf(
                 LayoutSwitchKey("123", NumberKeyboard.Name),
                 LanguageKey(),
-                CommaKey(0.1f, KeyDef.Appearance.Variant.Alternative),
+                AlphabetKey(",", "_", variant = KeyDef.Appearance.Variant.Alternative),
                 SpaceKey(),
-                SymbolKey(".", 0.1f, KeyDef.Appearance.Variant.Alternative),
+                AlphabetKey(".", "!", variant = KeyDef.Appearance.Variant.Alternative),
                 LayoutSwitchKey("!?#",PickerWindow.Key.Symbol.name,0.1f ),
                 ReturnKey()
             )
