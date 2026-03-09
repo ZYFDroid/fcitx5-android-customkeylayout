@@ -30,12 +30,11 @@ class PickerLayout(context: Context, theme: Theme, switchKey: KeyDef) :
     class Keyboard(context: Context, theme: Theme, switchKey: KeyDef) : BaseKeyboard(
         context, theme, listOf(
             listOf(
-                LayoutSwitchKey("ABC", TextKeyboard.Name),
-                PunctuationKey(","),
-                switchKey,
+                EmojiKey(),
+                CursorMoveKey(true,0.2f),
                 SpaceKey(),
-                PunctuationKey("."),
-                ReturnKey()
+                CursorMoveKey(false,0.2f),
+                LayoutSwitchKey("BACK","",0.2f),
             )
         )
     ) {
@@ -52,10 +51,9 @@ class PickerLayout(context: Context, theme: Theme, switchKey: KeyDef) :
             )
         )
 
-        val `return`: ImageKeyView by lazy { findViewById(R.id.button_return) }
 
         override fun onReturnDrawableUpdate(returnDrawable: Int) {
-            `return`.img.imageResource = returnDrawable
+            // Return key is not necessary here.
         }
     }
 

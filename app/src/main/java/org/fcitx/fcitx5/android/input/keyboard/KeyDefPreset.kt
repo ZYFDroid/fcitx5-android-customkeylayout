@@ -43,13 +43,15 @@ class AlphabetKey(
     val character: String,
     val punctuation: String,
     variant: Variant = Variant.Normal,
-    popup: Array<Popup>? = null
+    popup: Array<Popup>? = null,
+    percentWidth: Float = 0.1f
 ) : KeyDef(
     Appearance.AltText(
         displayText = character,
         altText = punctuation,
         textSize = 23f,
-        variant = variant
+        variant = variant,
+        percentWidth = percentWidth
     ),
     setOf(
         Behavior.Press(KeyAction.FcitxKeyAction(character)),
@@ -192,10 +194,23 @@ class CommaKey(
     )
 )
 
+
+class EmojiKey : KeyDef(
+    Appearance.Image(
+        src = R.drawable.ic_baseline_tag_faces_24,
+        variant = Variant.Normal,
+        percentWidth = 0.2f
+    ),
+    setOf(
+        Behavior.Press(KeyAction.PickerSwitchAction()),
+    )
+)
+
+
 class LanguageKey : KeyDef(
     Appearance.Image(
         src = R.drawable.ic_baseline_language_24,
-        variant = Variant.AltForeground,
+        variant = Variant.Alternative,
         viewId = R.id.button_lang
     ),
     setOf(
@@ -241,7 +256,27 @@ class ReturnKey(percentWidth: Float = 0.15f) : KeyDef(
         )
     ),
 )
-
+class CursorMoveKey(isLeft: Boolean,percentWidth: Float = 0.1f) : KeyDef(
+    Appearance.Text(
+        displayText = if (isLeft) "←" else "→",
+        textSize = 13f,
+        percentWidth = percentWidth,
+        border = Border.Special,
+        soundEffect = InputFeedbacks.SoundEffect.Standard
+    ),
+    setOf(
+        Behavior.Press(KeyAction.SymAction(KeySym(if(isLeft) FcitxKeyMapping.FcitxKey_Left else FcitxKeyMapping.FcitxKey_Right)))
+    ),
+    arrayOf(
+        Popup.Menu(
+            arrayOf(
+                Popup.Menu.Item(
+                    "CursorMove", R.drawable.ic_cursor_move, KeyAction.PickerSwitchAction()
+                )
+            )
+        )
+    ),
+)
 class ImageLayoutSwitchKey(
     @DrawableRes
     icon: Int,

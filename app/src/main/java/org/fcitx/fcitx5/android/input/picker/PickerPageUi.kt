@@ -159,7 +159,7 @@ class PickerPageUi(
                 // bottom/right corner
                 bottomOfParent()
                 rightOfParent()
-                matchConstraintPercentWidth = 0.15f
+                matchConstraintPercentWidth = 0.2f
             })
             keyViews.last().updateLayoutParams<ConstraintLayout.LayoutParams> {
                 // align right of last key to left of backspace
