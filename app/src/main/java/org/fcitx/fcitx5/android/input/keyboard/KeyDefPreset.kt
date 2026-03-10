@@ -411,3 +411,20 @@ class NumPadKey(
         Behavior.Press(KeyAction.SymAction(KeySym(sym), NumLockState))
     )
 )
+
+class NumPadTextKey(
+    displayText: String,
+    textSize: Float = 16f,
+    percentWidth: Float = 0.1f,
+    variant: Variant = Variant.Normal
+) : KeyDef(
+    Appearance.Text(
+        displayText,
+        textSize = textSize,
+        percentWidth = percentWidth,
+        variant = variant
+    ),
+    setOf(
+        Behavior.Press(KeyAction.CommitAction(displayText))
+    )
+)

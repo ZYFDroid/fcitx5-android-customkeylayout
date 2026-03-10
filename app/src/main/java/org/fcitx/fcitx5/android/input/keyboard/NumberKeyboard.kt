@@ -7,6 +7,8 @@ package org.fcitx.fcitx5.android.input.keyboard
 import android.annotation.SuppressLint
 import android.content.Context
 import org.fcitx.fcitx5.android.R
+import org.fcitx.fcitx5.android.core.FcitxKeyMapping
+import org.fcitx.fcitx5.android.core.KeySym
 import org.fcitx.fcitx5.android.data.theme.Theme
 import org.fcitx.fcitx5.android.input.picker.PickerWindow
 import org.fcitx.fcitx5.android.input.popup.PopupAction
@@ -23,7 +25,7 @@ class NumberKeyboard(
 
         val Layout: List<List<KeyDef>> = listOf(
             listOf(
-                NumPadKey(":", 0xffab, 23f, 0.15f, KeyDef.Appearance.Variant.Alternative),
+                NumPadTextKey(":", 23f, 0.15f, KeyDef.Appearance.Variant.Alternative),
                 NumPadKey("1", 0xffb1, 30f, 0f),
                 NumPadKey("2", 0xffb2, 30f, 0f),
                 NumPadKey("3", 0xffb3, 30f, 0f),
@@ -31,7 +33,7 @@ class NumberKeyboard(
                 BackspaceKey()
             ),
             listOf(
-                NumPadKey("+", 0xffad, 23f, 0.15f, KeyDef.Appearance.Variant.Alternative),
+                NumPadKey("+", 0xffab, 23f, 0.15f, KeyDef.Appearance.Variant.Alternative),
                 NumPadKey("4", 0xffb4, 30f, 0f),
                 NumPadKey("5", 0xffb5, 30f, 0f),
                 NumPadKey("6", 0xffb6, 30f, 0f),
@@ -39,7 +41,7 @@ class NumberKeyboard(
                 ReturnKey()
             ),
             listOf(
-                NumPadKey("-", 0xffaa, 23f, 0.15f, KeyDef.Appearance.Variant.Alternative),
+                NumPadKey("-", 0xffad, 23f, 0.15f, KeyDef.Appearance.Variant.Alternative),
                 NumPadKey("7", 0xffb7, 30f, 0f),
                 NumPadKey("8", 0xffb8, 30f, 0f),
                 NumPadKey("9", 0xffb9, 30f, 0f),
