@@ -61,7 +61,12 @@ class AlphabetKey(
             add(Behavior.SwipeLeft(KeyAction.CommitAction(leftChar)));
             add(Behavior.SwipeRight(KeyAction.CommitAction(rightChar)));
             if(canSwipeUp){
-                add(Behavior.Swipe(KeyAction.CommitAction(leftChar+rightChar)));
+                if(rightChar.equals("=")){
+                    add(Behavior.Swipe(KeyAction.CommitAction(leftChar+rightChar)));
+                }
+                else{
+                    add(Behavior.Swipe(KeyAction.InputBraceletAction(leftChar+rightChar)));
+                }
             }
         }
         else{
@@ -146,6 +151,27 @@ class LayoutSwitchKey(
         Behavior.Press(KeyAction.LayoutSwitchAction(to))
     )
 )
+
+class TextKeyboardSymbolKey(
+    percentWidth: Float = 0.15f,
+    variant: Variant = Variant.Alternative
+) : KeyDef(
+    Appearance.AltText(
+        "!?#","`",
+        textSize = 16f,
+        textStyle = Typeface.BOLD,
+        percentWidth = percentWidth,
+        variant = variant
+    ),
+    setOf(
+        Behavior.Press(KeyAction.LayoutSwitchAction(PickerWindow.Key.Symbol.name)),
+        Behavior.Swipe(KeyAction.FcitxKeyAction("`")),
+    ),
+    setOf(
+        Popup.AltPreview("!?#", "`")
+    ).toTypedArray()
+)
+
 
 class BackspaceKey(
     percentWidth: Float = 0.15f,
@@ -250,8 +276,13 @@ class SpaceKey : KeyDef(
     ),
     setOf(
         Behavior.Press(KeyAction.SymAction(KeySym(FcitxKeyMapping.FcitxKey_space))),
-        Behavior.LongPress(KeyAction.SpaceLongPressAction)
-    )
+        Behavior.LongPress(KeyAction.SpaceLongPressAction),
+        Behavior.SwipeLeft(KeyAction.SymAction(KeySym(FcitxKeyMapping.FcitxKey_Left))),
+        Behavior.SwipeRight(KeyAction.SymAction(KeySym(FcitxKeyMapping.FcitxKey_Right))),
+    ),
+    setOf(
+        Popup.BiDirAltPreview("␣", "←","→",false)
+    ).toTypedArray()
 )
 
 class ReturnKey(percentWidth: Float = 0.15f) : KeyDef(

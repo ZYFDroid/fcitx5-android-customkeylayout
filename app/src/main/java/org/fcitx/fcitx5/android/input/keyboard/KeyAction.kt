@@ -21,6 +21,8 @@ sealed class KeyAction {
 
     data class CommitAction(val text: String) : KeyAction()
 
+    data class InputBraceletAction(val text: String) : KeyAction()
+
     data class CapsAction(val lock: Boolean) : KeyAction()
 
     data object QuickPhraseAction : KeyAction()

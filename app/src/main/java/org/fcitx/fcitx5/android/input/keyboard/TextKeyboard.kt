@@ -72,7 +72,7 @@ class TextKeyboard(
                 AlphabetKey(",", "_", variant = KeyDef.Appearance.Variant.Alternative),
                 SpaceKey(),
                 AlphabetKey(".", "!", variant = KeyDef.Appearance.Variant.Alternative),
-                LayoutSwitchKey("!?#",PickerWindow.Key.Symbol.name,0.1f ),
+                TextKeyboardSymbolKey(0.1f),
                 ReturnKey()
             )
         )
