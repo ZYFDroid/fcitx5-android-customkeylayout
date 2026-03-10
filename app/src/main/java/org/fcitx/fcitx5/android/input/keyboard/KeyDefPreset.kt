@@ -276,13 +276,9 @@ class SpaceKey : KeyDef(
     ),
     setOf(
         Behavior.Press(KeyAction.SymAction(KeySym(FcitxKeyMapping.FcitxKey_space))),
-        Behavior.LongPress(KeyAction.SpaceLongPressAction),
-        Behavior.SwipeLeft(KeyAction.SymAction(KeySym(FcitxKeyMapping.FcitxKey_Left))),
-        Behavior.SwipeRight(KeyAction.SymAction(KeySym(FcitxKeyMapping.FcitxKey_Right))),
+        // Behavior.LongPress(KeyAction.SpaceLongPressAction),
+        // Remove LongPress Event to avoid swipe delay
     ),
-    setOf(
-        Popup.BiDirAltPreview("␣", "←","→",false)
-    ).toTypedArray()
 )
 
 class ReturnKey(percentWidth: Float = 0.15f) : KeyDef(

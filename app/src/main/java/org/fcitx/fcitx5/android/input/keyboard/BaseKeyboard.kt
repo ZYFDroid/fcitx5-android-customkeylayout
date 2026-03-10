@@ -206,8 +206,6 @@ abstract class BaseKeyboard(
                     }
                 }
             }
-            swipeThresholdY = disabledSwipeThreshold;
-            swipeThresholdX = disabledSwipeThreshold;
             def.behaviors.forEach {
                 when (it) {
                     is KeyDef.Behavior.Press -> {
