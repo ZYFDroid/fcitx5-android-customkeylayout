@@ -163,7 +163,7 @@ abstract class BaseKeyboard(
                 spaceKeys.add(this)
                 swipeEnabled = spaceSwipeMoveCursor.getValue()
                 swipeRepeatEnabled = true
-                swipeThresholdX = selectionSwipeThreshold
+                swipeThresholdX = selectionSwipeThreshold * 2
                 swipeThresholdY = disabledSwipeThreshold
                 onGestureListener = OnGestureListener { view, event ->
                     when (event.type) {
