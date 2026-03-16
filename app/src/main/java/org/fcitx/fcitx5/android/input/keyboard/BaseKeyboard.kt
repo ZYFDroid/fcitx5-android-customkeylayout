@@ -41,6 +41,7 @@ import splitties.views.dsl.constraintlayout.rightToLeftOf
 import splitties.views.dsl.constraintlayout.topOfParent
 import splitties.views.dsl.core.add
 import timber.log.Timber
+import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
@@ -229,6 +230,7 @@ abstract class BaseKeyboard(
                     is KeyDef.Behavior.SwipeLeft -> {
                         swipeEnabled = true
                         swipeThresholdX = inputSwipeThreshold
+                        swipeThresholdY = inputSwipeThreshold
                         val oldOnGestureListener = onGestureListener ?: OnGestureListener.Empty
                         onGestureListener = OnGestureListener { view, event ->
                             when (event.type) {
@@ -247,6 +249,7 @@ abstract class BaseKeyboard(
                     is KeyDef.Behavior.SwipeRight -> {
                         swipeEnabled = true
                         swipeThresholdX = inputSwipeThreshold
+                        swipeThresholdY = inputSwipeThreshold
                         val oldOnGestureListener = onGestureListener ?: OnGestureListener.Empty
                         onGestureListener = OnGestureListener { view, event ->
                             when (event.type) {
@@ -264,12 +267,13 @@ abstract class BaseKeyboard(
                     }
                     is KeyDef.Behavior.Swipe -> {
                         swipeEnabled = true
+                        swipeThresholdX = inputSwipeThreshold
                         swipeThresholdY = inputSwipeThreshold
                         val oldOnGestureListener = onGestureListener ?: OnGestureListener.Empty
                         onGestureListener = OnGestureListener { view, event ->
                             when (event.type) {
                                 GestureType.Up -> {
-                                    if (!event.consumed && swipeSymbolDirection.checkY(event.totalY)) {
+                                    if (!event.consumed && swipeSymbolDirection.checkY(event.totalY,event.totalX)) {
                                         onAction(it.action)
                                         true
                                     } else {
@@ -347,7 +351,7 @@ abstract class BaseKeyboard(
                                     GestureType.Move -> {
 
                                         // 下面的部分只检查了
-                                        val triggered = swipeSymbolDirection.checkY(event.totalY)
+                                        val triggered = swipeSymbolDirection.checkY(event.totalY,event.totalX)
                                         val text = if (triggered) it.alternative else it.content
                                         onPopupAction(
                                             PopupAction.PreviewUpdateAction(view.id, text)
@@ -372,9 +376,9 @@ abstract class BaseKeyboard(
                                         PopupAction.PreviewAction(view.id, it.content, view.bounds)
                                     )
                                     GestureType.Move -> {
-                                        val triggeredY = swipeSymbolDirection.checkY(event.totalY)
-                                        val triggeredLeft = event.totalX < 0 && Math.abs(event.totalX) > Math.abs(event.totalY);
-                                        val triggeredRight = event.totalX > 0 && Math.abs(event.totalX) > Math.abs(event.totalY);
+                                        val triggeredY = swipeSymbolDirection.checkY(event.totalY,event.totalX)
+                                        val triggeredLeft = event.totalX < 0 && abs(event.totalX) > abs(event.totalY);
+                                        val triggeredRight = event.totalX > 0 && abs(event.totalX) > abs(event.totalY);
                                         val text = if(it.hasUp && triggeredY){
                                             it.left + it.right
                                         } else{
